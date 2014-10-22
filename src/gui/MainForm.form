@@ -293,6 +293,7 @@
                               <Properties>
                                 <Property name="columns" type="int" value="20"/>
                                 <Property name="rows" type="int" value="5"/>
+                                <Property name="text" type="java.lang.String" value="&#x5206;&#x7ea7;&#x5b58;&#x50a8;&#x7684;&#x539f;&#x7406;&#x662f;&#x57fa;&#x4e8e;&#x751f;&#x547d;&#x5468;&#x671f;&#x7ba1;&#x7406;"/>
                               </Properties>
                             </Component>
                           </SubComponents>

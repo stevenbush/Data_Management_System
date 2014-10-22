@@ -278,6 +278,7 @@ public class MainForm extends javax.swing.JFrame {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setText("分级存储的原理是基于生命周期管理");
         jScrollPane2.setViewportView(jTextArea1);
 
         jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -286,7 +287,7 @@ public class MainForm extends javax.swing.JFrame {
 
         jSplitPane3.setBottomComponent(jSplitPane4);
 
-        jPanelDial.setLayout(new java.awt.GridLayout());
+        jPanelDial.setLayout(new java.awt.GridLayout(1, 0));
         jSplitPane3.setLeftComponent(jPanelDial);
 
         jSplitPane1.setRightComponent(jSplitPane3);
@@ -426,7 +427,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelCenter;
     private javax.swing.JPanel jPanelDial;
     private javax.swing.JPanel jPanelPlot;
-    private javax.swing.JPanel jPanel_AMS_real_data;
+    public javax.swing.JPanel jPanel_AMS_real_data;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;

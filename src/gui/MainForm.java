@@ -5,9 +5,12 @@
  */
 package gui;
 
+import java.awt.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -18,15 +21,68 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardCategorySeriesLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.dial.DialBackground;
+import org.jfree.chart.plot.dial.DialCap;
+import org.jfree.chart.plot.dial.DialPlot;
+import org.jfree.chart.plot.dial.DialTextAnnotation;
+import org.jfree.chart.plot.dial.DialValueIndicator;
+import org.jfree.chart.plot.dial.StandardDialFrame;
+import org.jfree.chart.plot.dial.StandardDialScale;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultValueDataset;
+import org.jfree.data.general.ValueDataset;
 
 /**
  *
  * @author jiyuanshi
  */
 public class MainForm extends javax.swing.JFrame {
+
+
+    public class BackgroundPanel extends JPanel {
+
+        /**
+         *
+         */
+        private static final long serialVersionUID = -6352788025440244338L;
+
+        
+        private Image image = null;
+
+        public BackgroundPanel(Image image) {
+            this.image = image;
+        }
+
+        protected void paintComponent(Graphics g) {
+            g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
+    }
+
+    public static JFreeChart createStandardDialChart(String s, String s1, ValueDataset valuedataset, double d, double d1, double d2, int i) {
+        DialPlot dialplot = new DialPlot();
+        dialplot.setDataset(valuedataset);
+        dialplot.setDialFrame(new StandardDialFrame());
+        dialplot.setBackground(new DialBackground());
+        DialTextAnnotation dialtextannotation = new DialTextAnnotation(s1);
+        dialtextannotation.setFont(new Font("Dialog", 1, 14));
+        dialtextannotation.setRadius(0.69999999999999996D);
+        dialplot.addLayer(dialtextannotation);
+        DialValueIndicator dialvalueindicator = new DialValueIndicator(0);
+        dialplot.addLayer(dialvalueindicator);
+        StandardDialScale standarddialscale = new StandardDialScale(d, d1, -120D, -300D, 10D, 4);
+        standarddialscale.setMajorTickIncrement(d2);
+        standarddialscale.setMinorTickCount(i);
+        standarddialscale.setTickRadius(0.88D);
+        standarddialscale.setTickLabelOffset(0.14999999999999999D);
+        standarddialscale.setTickLabelFont(new Font("Dialog", 0, 14));
+        dialplot.addScale(0, standarddialscale);
+        dialplot.addPointer(new org.jfree.chart.plot.dial.DialPointer.Pin());
+        DialCap dialcap = new DialCap();
+        dialplot.setCap(dialcap);
+        return new JFreeChart(s, dialplot);
+    }
 
     private static CategoryDataset createDataset() {
         String s = "原始数据";
@@ -86,6 +142,16 @@ public class MainForm extends javax.swing.JFrame {
 
         JFreeChart jfreechart = create_AMS_DATA_Chart(createDataset());
         jPanel_AMS_real_data.add(new ChartPanel(jfreechart), BorderLayout.CENTER);
+        DefaultValueDataset dataset = new DefaultValueDataset(10D);
+        JFreeChart jfreechart_dial = createStandardDialChart("Dial Demo 1", "Temperature", dataset, -40D, 60D, 10D, 4);
+        jPanelDial.add(new ChartPanel(jfreechart_dial));
+        jPanelDial.add(new ChartPanel(jfreechart_dial));
+        jPanelDial.add(new ChartPanel(jfreechart_dial));
+        jPanelDial.add(new ChartPanel(jfreechart_dial));
+
+        Image image = new ImageIcon("./plot/system_architecture.png").getImage();
+        JPanel panelplot = new BackgroundPanel(image); 
+        jPanelPlot.add(panelplot);
     }
 
     /**
@@ -103,6 +169,16 @@ public class MainForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
         jPanel_AMS_real_data = new javax.swing.JPanel();
+        jSplitPane3 = new javax.swing.JSplitPane();
+        jSplitPane4 = new javax.swing.JSplitPane();
+        jPanelCenter = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanelPlot = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jPanelDial = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -177,20 +253,56 @@ public class MainForm extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jSplitPane2);
 
+        jSplitPane3.setDividerSize(4);
+        jSplitPane3.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        jSplitPane4.setDividerSize(4);
+        jSplitPane4.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        jPanelCenter.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jLabel2.setText("AMS-02 SOC@SEU整体架构 ");
+        jPanelCenter.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+
+        jPanelPlot.setLayout(new java.awt.BorderLayout());
+        jPanelCenter.add(jPanelPlot, java.awt.BorderLayout.CENTER);
+
+        jSplitPane4.setTopComponent(jPanelCenter);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jLabel1.setText("功能区描述");
+        jPanel4.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
+        jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jSplitPane4.setRightComponent(jPanel4);
+
+        jSplitPane3.setBottomComponent(jSplitPane4);
+
+        jPanelDial.setLayout(new java.awt.GridLayout());
+        jSplitPane3.setLeftComponent(jPanelDial);
+
+        jSplitPane1.setRightComponent(jSplitPane3);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jSplitPane1)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
         );
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -255,17 +367,6 @@ public class MainForm extends javax.swing.JFrame {
 
         setJMenuBar(menuBar);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -318,11 +419,21 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    public javax.swing.JPanel jPanel_AMS_real_data;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanelCenter;
+    private javax.swing.JPanel jPanelDial;
+    private javax.swing.JPanel jPanelPlot;
+    private javax.swing.JPanel jPanel_AMS_real_data;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JSplitPane jSplitPane3;
+    private javax.swing.JSplitPane jSplitPane4;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTree jTree1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
